@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AutoCaption</title>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<header>
+  <div class="logo">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+      <rect x="1" y="4" width="18" height="12" rx="2" stroke="#6c8ebf" stroke-width="1.5"/>
+      <rect x="4"  y="8"  width="5" height="2" rx="1" fill="#6c8ebf"/>
+      <rect x="4"  y="11" width="9" height="2" rx="1" fill="#6c8ebf" opacity="0.5"/>
+      <rect x="11" y="8"  width="5" height="2" rx="1" fill="#6c8ebf" opacity="0.7"/>
+    </svg>
+    <span>AutoCaption</span>
+  </div>
+  <div id="status-dot" class="dot idle" title="Idle"></div>
+</header>
+
+<!-- ── Comp Info ── -->
+<section class="card" id="comp-card">
+  <div class="card-row">
+    <span class="label">Active comp</span>
+    <span id="comp-name" class="value muted">— none —</span>
+  </div>
+  <div class="card-row">
+    <span class="label">Audio layer</span>
+    <span id="audio-layer" class="value muted">—</span>
+  </div>
+  <button class="btn-ghost" id="btn-refresh" title="Refresh comp info">
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+      <path d="M10 6A4 4 0 1 1 6 2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      <path d="M6 0.5L7.5 2 6 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Refresh
+  </button>
+</section>
+
+<!-- ── Style options ── -->
+<section class="card">
+  <div class="section-title">Caption Style</div>
+
+  <div class="field-row">
+    <label for="font-size">Font size (px)</label>
+    <div class="input-group">
+      <input type="range" id="font-size-range" min="24" max="120" value="72" oninput="document.getElementById('font-size').value=this.value"/>
+      <input type="number" id="font-size" min="24" max="120" value="72" oninput="document.getElementById('font-size-range').value=this.value"/>
+    </div>
+  </div>
+
+  <div class="field-row">
+    <label for="font-select">Font</label>
+    <select id="font-select">
+      <option value="Arial-BoldMT">Arial Bold</option>
+      <option value="Helvetica-Bold">Helvetica Bold</option>
+      <option value="ArialMT">Arial Regular</option>
+      <option value="Helvetica">Helvetica</option>
+      <option value="Georgia-Bold">Georgia Bold</option>
+      <option value="TrebuchetMS-Bold">Trebuchet Bold</option>
+      <option value="FuturaMedium">Futura Medium</option>
+    </select>
+  </div>
+
+  <div class="field-row">
+    <label>Text color</label>
+    <div class="color-row">
+      <div class="color-swatch active" data-color="white"  style="background:#ffffff" title="White"></div>
+      <div class="color-swatch"        data-color="yellow" style="background:#ffe234" title="Yellow"></div>
+      <div class="color-swatch"        data-color="cyan"   style="background:#34e8ff" title="Cyan"></div>
+      <div class="color-swatch"        data-color="custom" style="background:none; border:1px dashed #555" title="Custom">
+        <input type="color" id="custom-color" value="#ffffff" style="opacity:0;position:absolute;width:100%;height:100%;cursor:pointer;border:none;padding:0;margin:0"/>
+      </div>
+    </div>
+    <span id="color-preview" class="color-hex">#ffffff</span>
+  </div>
+
+  <div class="field-row">
+    <label for="pos-y">Vertical position</label>
+    <div class="pos-group">
+      <button class="pos-btn active" data-pos="82">Lower</button>
+      <button class="pos-btn"        data-pos="50">Centre</button>
+      <button class="pos-btn"        data-pos="15">Upper</button>
+    </div>
+  </div>
+
+</section>
+
+<!-- ── Whisper settings ── -->
+<section class="card">
+  <div class="section-title">Whisper Settings</div>
+
+  <div class="field-row">
+    <label for="language">Language</label>
+    <select id="language">
+      <option value="en">English</option>
+      <option value="es">Spanish</option>
+      <option value="fr">French</option>
+      <option value="de">German</option>
+      <option value="it">Italian</option>
+      <option value="pt">Portuguese</option>
+      <option value="ja">Japanese</option>
+      <option value="zh">Chinese</option>
+      <option value="auto">Auto-detect</option>
+    </select>
+  </div>
+
+  <div class="field-row">
+    <label for="model-select">Model</label>
+    <select id="model-select">
+      <option value="ggml-tiny.en.bin">tiny.en — fastest</option>
+      <option value="ggml-base.en.bin" selected>base.en — balanced</option>
+      <option value="ggml-small.en.bin">small.en — accurate</option>
+      <option value="ggml-medium.en.bin">medium.en — best</option>
+    </select>
+  </div>
+</section>
+
+<!-- ── Progress log ── -->
+<section class="card" id="log-card" style="display:none">
+  <div id="log-lines"></div>
+  <div class="progress-bar-wrap">
+    <div id="progress-bar"></div>
+  </div>
+</section>
+
+<!-- ── Actions ── -->
+<footer>
+  <button class="btn-danger btn-sm" id="btn-clear">Clear Captions</button>
+  <button class="btn-primary" id="btn-generate">Generate Captions</button>
+</footer>
+
+<script src="CSInterface.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
